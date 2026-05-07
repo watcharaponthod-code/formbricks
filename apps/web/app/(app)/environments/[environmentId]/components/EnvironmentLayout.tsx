@@ -79,7 +79,9 @@ export const EnvironmentLayout = async ({ layoutData, children }: EnvironmentLay
           organizationProjectsLimit={organizationProjectsLimit}
           isLicenseActive={active}
           isAccessControlAllowed={isAccessControlAllowed}
+          responseCount={responseCount}
         />
+
         <div id="mainContent" className="flex flex-1 flex-col overflow-hidden bg-slate-50">
           <TopControlBar
             environments={environments}

@@ -456,6 +456,9 @@
     "title": "Title",
     "top_left": "Top Left",
     "top_right": "Top Right",
+    "trial_banner_days_remaining": "{count} days left",
+    "trial_banner_expired": "Trial expired",
+    "trial_banner_one_day_remaining": "1 day left",
     "trial_days_remaining": "{count} days left in your trial",
     "trial_expired": "Your trial has expired",
     "trial_one_day_remaining": "1 day left in your trial",
@@ -2429,11 +2432,13 @@
   "s": {
     "check_inbox_or_spam": "Please also check your spam folder if you do not see the email in your inbox.",
     "completed": "This survey is closed.",
+    "completed_heading": "Completed",
     "create_your_own": "Create your own open-source survey",
     "enter_pin": "This survey is protected. Enter the PIN below.",
     "just_curious": "Just curious?",
     "link_invalid": "This survey can only be taken by invitation.",
     "paused": "This survey is temporarily paused.",
+    "paused_heading": "Paused",
     "please_try_again_with_the_original_link": "Please try again with the original link",
     "preview_survey_questions": "Preview survey questions.",
     "question_preview": "Question Preview",
@@ -2447,9 +2452,7 @@
     "verify_email_before_submission": "Verify your email to respond",
     "verify_email_before_submission_button": "Verify",
     "verify_email_before_submission_description": "To respond to this survey, please verify your email",
-    "want_to_respond": "Want to respond?",
-    "paused_heading": "Paused",
-    "completed_heading": "Completed"
+    "want_to_respond": "Want to respond?"
   },
   "setup": {
     "intro": {

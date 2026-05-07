@@ -36,9 +36,11 @@ import FBLogo from "@/images/formbricks-wordmark.svg";
 import { cn } from "@/lib/cn";
 import { getBillingFallbackPath } from "@/lib/membership/navigation";
 import { getAccessFlags } from "@/lib/membership/utils";
+import { getPostHogClientFeatureFlag } from "@/lib/posthog/client";
 import { getFormattedErrorMessage } from "@/lib/utils/helper";
 import { useSignOut } from "@/modules/auth/hooks/use-sign-out";
 import { TrialAlert } from "@/modules/ee/billing/components/trial-alert";
+import { TRIAL_BASE_RESPONSE_LIMIT, TrialBannerNew } from "@/modules/ee/billing/components/trial-banner-new";
 import { CreateOrganizationModal } from "@/modules/organization/components/CreateOrganizationModal";
 import { CreateProjectModal } from "@/modules/projects/components/create-project-modal";
 import { ProjectLimitModal } from "@/modules/projects/components/project-limit-modal";
@@ -70,6 +72,7 @@ interface NavigationProps {
   organizationProjectsLimit: number;
   isLicenseActive: boolean;
   isAccessControlAllowed: boolean;
+  responseCount: number;
 }
 
 const isActiveProjectSetting = (pathname: string, settingId: string): boolean => {
@@ -104,6 +107,7 @@ export const MainNavigation = ({
   organizationProjectsLimit,
   isLicenseActive,
   isAccessControlAllowed,
+  responseCount,
 }: NavigationProps) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -557,11 +561,24 @@ export const MainNavigation = ({
             )}
 
             {/* Trial Days Remaining */}
-            {!isCollapsed && isFormbricksCloud && trialDaysRemaining !== null && (
-              <Link href={`/environments/${environment.id}/settings/billing`} className="m-2 block">
-                <TrialAlert trialDaysRemaining={trialDaysRemaining} size="small" />
-              </Link>
-            )}
+            {!isCollapsed &&
+              isFormbricksCloud &&
+              trialDaysRemaining !== null &&
+              (getPostHogClientFeatureFlag("new-trial-banner") === "test" ? (
+                <TrialBannerNew
+                  trialDaysRemaining={trialDaysRemaining}
+                  planName={organization.billing.stripe?.plan ?? "pro"}
+                  responseCount={responseCount}
+                  responseLimit={organization.billing.limits.monthly.responses}
+                  baseResponseLimit={TRIAL_BASE_RESPONSE_LIMIT}
+                  billingHref={`/environments/${environment.id}/settings/billing`}
+                  hasPaymentMethod={organization.billing.stripe?.hasPaymentMethod}
+                />
+              ) : (
+                <Link href={`/environments/${environment.id}/settings/billing`} className="m-2 block">
+                  <TrialAlert trialDaysRemaining={trialDaysRemaining} size="small" />
+                </Link>
+              ))}
 
             <div className="flex flex-col">
               <DropdownMenu onOpenChange={setIsWorkspaceDropdownOpen}>

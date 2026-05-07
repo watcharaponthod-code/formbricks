@@ -422,11 +422,6 @@ export const PricingTable = ({
               <AlertDescription>
                 {t("environments.settings.billing.trial_alert_description")}
               </AlertDescription>
-              {hasBillingRights && (
-                <AlertButton onClick={() => void openTrialPaymentCheckout()}>
-                  {t("environments.settings.billing.add_payment_method")}
-                </AlertButton>
-              )}
             </TrialAlert>
           ))}
 
