@@ -13,6 +13,9 @@ const BOOLEAN_FIELDS = new Set<THubTargetField>(["value_boolean"]);
 const TIMESTAMP_FIELDS = new Set<THubTargetField>(["collected_at", "value_date"]);
 const JSON_FIELDS = new Set<THubTargetField>(["metadata"]);
 
+// ISO 8601 pattern: YYYY-MM-DDTHH:mm:ss.sssZ or YYYY-MM-DDTHH:mm:ssZ or YYYY-MM-DD
+const ISO_8601_PATTERN = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?)?$/;
+
 const coerceValue = (value: string, targetField: THubTargetField): string | number | boolean | undefined => {
   const trimmed = value.trim();
   if (trimmed === "") return undefined;
@@ -30,6 +33,7 @@ const coerceValue = (value: string, targetField: THubTargetField): string | numb
   }
 
   if (TIMESTAMP_FIELDS.has(targetField)) {
+    if (!ISO_8601_PATTERN.test(trimmed)) return undefined;
     const date = new Date(trimmed);
     return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
   }

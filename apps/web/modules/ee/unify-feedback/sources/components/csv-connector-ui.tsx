@@ -50,7 +50,10 @@ export function CsvConnectorUI({
   useEffect(() => {
     const sourceNameMapping = mappings.find((m) => m.targetFieldId === "source_name");
     const current = sourceNameMapping?.staticValue ?? sourceNameMapping?.sourceFieldId;
-    if (lastAutoSourceNameRef.current !== undefined && current !== lastAutoSourceNameRef.current) {
+    if (
+      lastAutoSourceNameRef.current !== undefined &&
+      (current !== lastAutoSourceNameRef.current || current === undefined)
+    ) {
       userEditedSourceNameRef.current = true;
     }
   }, [mappings]);

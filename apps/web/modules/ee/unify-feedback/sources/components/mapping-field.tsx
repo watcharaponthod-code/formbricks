@@ -230,11 +230,54 @@ export const FormTargetField = ({
                 </SelectTrigger>
                 <SelectContent>
                   {isEnum && field.enumValues ? (
-                    field.enumValues.map((enumValue) => (
-                      <SelectItem key={enumValue} value={`${SENTINEL.ENUM_PREFIX}${enumValue}`}>
-                        {enumValue}
-                      </SelectItem>
-                    ))
+                    <>
+                      <SelectGroup>
+                        <SelectLabel className={GROUP_LABEL_CLASS}>
+                          {t("workspace.unify.enum_values")}
+                        </SelectLabel>
+                        {field.enumValues.map((enumValue) => (
+                          <SelectItem key={enumValue} value={`${SENTINEL.ENUM_PREFIX}${enumValue}`}>
+                            {enumValue}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                      {sourceFields.length > 0 && (
+                        <>
+                          <SelectSeparator />
+                          <SelectGroup>
+                            <SelectLabel className={GROUP_LABEL_CLASS}>
+                              {t("workspace.unify.csv_columns")}
+                            </SelectLabel>
+                            {sourceFields.map((column) => {
+                              const otherUsage = otherUsageByColumn[column.id];
+                              return (
+                                <SelectItem key={column.id} value={`${SENTINEL.COLUMN_PREFIX}${column.id}`}>
+                                  <span className="flex w-full items-center gap-2">
+                                    <span className="text-slate-900">{column.name}</span>
+                                    {otherUsage && (
+                                      <span className="ml-auto rounded bg-slate-100 px-1.5 py-0.5 text-xs font-normal text-slate-500">
+                                        {t("workspace.unify.csv_column_used_by", { target: otherUsage })}
+                                      </span>
+                                    )}
+                                  </span>
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectGroup>
+                        </>
+                      )}
+                      {!field.required && hasMapping && (
+                        <>
+                          <SelectSeparator />
+                          <SelectItem value={SENTINEL.CLEAR}>
+                            <span className="inline-flex items-center gap-2 text-slate-900">
+                              <MinusCircleIcon className="h-3.5 w-3.5" />
+                              {t("workspace.unify.dont_include")}
+                            </span>
+                          </SelectItem>
+                        </>
+                      )}
+                    </>
                   ) : (
                     <>
                       {sourceFields.length > 0 && (
